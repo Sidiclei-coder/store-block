@@ -1,30 +1,36 @@
 //import React from 'react'
-import  React ,{  useState  }  from  'react'
-import { TimeSplit } from './typings/global' 
+import React, { useState } from 'react'
+import { TimeSplit } from './typings/global'
 import { tick } from './utils/time'
 
-interface CountdownProps {
-  targetDate: string     
- }
+import { useCssHandles } from "vtex.css-handles"
 
- const DEFAULT_TARGET_DATE = (new Date('2020-06-25')).toISOString()
+interface CountdownProps {
+  targetDate: string
+}
+
+
+const DEFAULT_TARGET_DATE = (new Date('2020-06-25')).toISOString()
+
+const CSS_HANDLES = ["countdown"]
 
 const Countdown: StorefrontFunctionComponent<CountdownProps> = ({ targetDate = DEFAULT_TARGET_DATE }) => {
   const [timeRemaining, setTime] = useState<TimeSplit>({
-     hours: '00',
-     minutes: '00',
-     seconds: '00'
-   })
+    hours: '00',
+    minutes: '00',
+    seconds: '00'
+  })
 
-   tick(targetDate, setTime)
+  const handles = useCssHandles(CSS_HANDLES)
 
-  return ( 
-     <div> 
-       
-       <h1>{`${timeRemaining.hours}:${timeRemaining.minutes}:${timeRemaining.seconds}`}</h1> 
-     </div> 
-    ) 
-  }
+  tick(targetDate, setTime)
+
+  return (
+      <div className={`${handles.countdown} t-heading-2 fw3 w-100 c-muted-1 db tc`}>
+      <h1>{`${timeRemaining.hours}:${timeRemaining.minutes}:${timeRemaining.seconds}`}</h1>
+    </div>
+  )
+}
 
 Countdown.schema = {
   title: 'editor.countdown.title',
@@ -32,11 +38,11 @@ Countdown.schema = {
   type: 'object',
   properties: {
     targetDate: {
-          title: 'Final date',
-          description: 'Final date used in the countdown',
-          type: 'string',
-          default: null,
-       },
+      title: 'Final date',
+      description: 'Final date used in the countdown',
+      type: 'string',
+      default: null,
+    },
   },
 }
 
